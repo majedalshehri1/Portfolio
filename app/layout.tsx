@@ -1,50 +1,59 @@
-import Header from "@/components/header";
 import "./globals.css";
-import { Raleway } from "next/font/google";
-import ActiveSectionContextProvider from "@/context/active-section-context";
-import Footer from "@/components/footer";
-import ThemeSwitch from "@/components/theme-switch";
-import ThemeContextProvider from "@/context/theme-context";
-import { Toaster } from "react-hot-toast";
+import type { Metadata } from "next";
+import Link from "next/link"; //
 
-const raleway = Raleway({
+// import components
+import Footer from "@/components/sections/Footer";
+
+// Font imports
+import { Sora, Manrope, Borel } from "next/font/google";
+const display = Sora({ subsets: ["latin"], variable: "--font-display" });
+const sans = Manrope({ subsets: ["latin"], variable: "--font-sans" });
+const borel = Borel({
   subsets: ["latin"],
-  weight: ["400", "700"], 
-  variable: "--font-raleway",
-  display: "swap",
+  variable: "--font-borel",
+  weight: "400",
 });
 
 export const metadata = {
-  title: "Majed | Personal Portfolio",
-  description: "Majed is a Software Engineer and Full-Stack Developer.",
+  title: "Majed Portfolio",
+  description: "My portfolio showcasing React, Vue, and Spring Boot projects",
   icons: {
-    icon: "/WhiteLogo.webp", 
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
+  openGraph: {
+    title: "Majed Alshehri - Software Engineer",
+    description: "My portfolio showcasing React, Vue, and Spring Boot projects",
+    url: "https://www.majedalshehri.com/",
+    siteName: "Majed Alshehri - Software Engineer",
+    images: [{ url: "" }],
+    locale: "en_US",
+    type: "website",
   },
 };
 
+// Root layout
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${raleway.variable} !scroll-smooth`}>
+    <html lang="en">
       <body
-        className="font-sans bg-gray-50 text-gray-950 relative pt-28 sm:pt-36 dark:bg-gray-900 dark:text-gray-50 dark:text-opacity-90"
+        className={` flex flex-col min-h-screen ${display.variable} ${sans.variable} ${borel.variable} font-sans`}
       >
-        
-        <div className="bg-[#f7c9cb] absolute top-[-6rem] -z-10 right-[11rem] h-[31.25rem] w-[31.25rem] rounded-full blur-[10rem] sm:w-[68.75rem] dark:bg-[#62769459]"></div>
-        <div className="bg-[#d0cbf8] absolute top-[-1rem] -z-10 left-[-35rem] h-[31.25rem] w-[50rem] rounded-full blur-[10rem] sm:w-[68.75rem] md:left-[-33rem] lg:left-[-28rem] xl:left-[-15rem] 2xl:left-[-5rem] dark:bg-[#6763943b]"></div>
-        
-        <ThemeContextProvider>
-          <ActiveSectionContextProvider>
-            <Header />
-            {children}
-            <Footer />
-            <Toaster position="top-right" />
-            <ThemeSwitch />
-          </ActiveSectionContextProvider>
-        </ThemeContextProvider>
+        <Link
+          href="/"
+          className="block mt-16 font-Borel text-xl text-center py-4 w-[7rem] m-auto hover:text-gray-500 transition-all"
+          aria-label="Go to home"
+        >
+          Home
+        </Link>
+        <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   );
