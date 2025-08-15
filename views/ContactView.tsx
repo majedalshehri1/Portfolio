@@ -1,10 +1,12 @@
-const content = () => {
+import ContactMethods from "@/components/sections/ContactMethods";
+
+const ContactView = () => {
   return (
     <div>
-      <h1>Contact</h1>
-      <p>Contact page content goes here.</p>
+      <h1 className="sr-only">Contact</h1>
+      <ContactMethods />
     </div>
   );
 };
 
-export default content;
+export default ContactView;

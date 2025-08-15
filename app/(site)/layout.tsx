@@ -3,10 +3,5 @@ export default function SiteLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div>
-      {/* Site-specific layout components can go here */}
-      {children}
-    </div>
-  );
+  return <div>{children}</div>;
 }
