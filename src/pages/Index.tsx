@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import Layout from "@/components/layout/Layout";
 import BlogPostRow from "@/components/BlogPostRow";
 import SectionHeader from "@/components/SectionHeader";
-import WorkSectionHeader from "@/components/WorkSectionHeader";
 import MacBookMockup from "@/components/MacBookMockup";
 import { projects, type Project } from "@/data/projects";
 import { blogPosts } from "@/data/blog-posts";
@@ -64,7 +63,7 @@ const LatestWorkSection = memo(({ projects }: { projects: Project[] }) => {
   return (
     <section className="py-12">
       <div className="container mx-auto px-6">
-        <WorkSectionHeader title="Latest Work" link="/work" />
+        <SectionHeader title="Latest Work" viewAllLink="/work" />
         <div className="divider mb-8" />
         
         <div className="relative">

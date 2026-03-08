@@ -1,11 +1,17 @@
 import { ComponentPropsWithoutRef } from "react";
+import OptimizedImage from "@/components/shared/OptimizedImage";
 
 /**
  * Custom MDX components for blog post rendering
  * Provides consistent, beautiful styling for all blog content
+ *
+ * Includes OptimizedImage component for Cloudinary-optimized images
  */
 
 const MDXComponents = {
+  // Custom components
+  OptimizedImage,
+
   // Headings
   h1: (props: ComponentPropsWithoutRef<"h1">) => (
     <h1

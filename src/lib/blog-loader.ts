@@ -1,4 +1,5 @@
 import { BlogPost, BlogCategory } from "@/data/blog-posts";
+import { BLOG_IMAGES } from "@/config/images";
 
 // Import all MDX files
 const mdxFiles = import.meta.glob("/src/content/blog/*.mdx", { eager: true });
@@ -58,9 +59,10 @@ export const loadBlogPosts = (): BlogPost[] => {
       slug,
       category: frontmatter.category as BlogCategory,
       intro: frontmatter.intro,
-      image: frontmatter.image ? projectTrailtype : undefined,
+      image: frontmatter.image ? BLOG_IMAGES[frontmatter.image as keyof typeof BLOG_IMAGES] : undefined,
       content: [], // Content will be rendered by MDX component
       MDXContent, // Store the MDX component for rendering
+      dir: frontmatter.dir as "ltr" | "rtl" | undefined, // Text direction for i18n
     });
   }
 

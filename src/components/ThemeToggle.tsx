@@ -2,7 +2,6 @@ import { memo } from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { motion } from "framer-motion";
-import { tapScale } from "@/lib/animations";
 
 const ThemeToggle = memo(() => {
   const { theme, setTheme } = useTheme();
@@ -15,7 +14,7 @@ const ThemeToggle = memo(() => {
     <motion.button
       onClick={toggleTheme}
       className="relative p-2 rounded-full bg-secondary hover:bg-secondary/80 transition-colors duration-200"
-      {...tapScale}
+      whileTap={{ scale: 0.95 }}
       aria-label="Toggle theme"
     >
       <Sun className="h-[18px] w-[18px] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-foreground" />

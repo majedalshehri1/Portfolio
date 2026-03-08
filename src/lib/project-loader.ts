@@ -1,17 +1,19 @@
 import { Project } from "@/data/projects";
-import projectYusr from "@/assets/project-yusr.webp";
-import projectTalaqa from "@/assets/project-talaqa.webp";
-import talaqaMedal from "@/assets/talaqa-2nd-place-medal.jpeg";
-import talaqaPoster from "@/assets/talaqa-our-poster.jpeg";
-import talaqaAward from "@/assets/talaqa-2nd-place.jpeg";
+import { PROJECT_IMAGES } from "@/config/images";
 
-// Map image names to actual imports
+/**
+ * Image mapping for backward compatibility
+ * Maps frontmatter image keys to Cloudinary public IDs
+ */
 const imageMap: Record<string, string> = {
-  talaqa: projectTalaqa,
-  yusr: projectYusr,
-  "talaqa-medal": talaqaMedal,
-  "talaqa-poster": talaqaPoster,
-  "talaqa-award": talaqaAward,
+  // Project thumbnails
+  talaqa: PROJECT_IMAGES.talaqa,
+  yusr: PROJECT_IMAGES.yusr,
+
+  // Talaqa gallery images
+  "talaqa-medal": PROJECT_IMAGES.talaqaMedal,
+  "talaqa-poster": PROJECT_IMAGES.talaqaPoster,
+  "talaqa-award": PROJECT_IMAGES.talaqaAward,
 };
 
 // Import all MDX files
@@ -47,8 +49,8 @@ export const loadProjects = (): Project[] => {
     // Extract slug from file path
     const slug = path.replace("/src/content/projects/", "").replace(".mdx", "");
 
-    // Get image from map
-    const image = imageMap[frontmatter.image] || projectTrailtype;
+    // Get image from map (Cloudinary public ID)
+    const image = frontmatter.image ? imageMap[frontmatter.image] : undefined;
 
     projects.push({
       title: frontmatter.title,

@@ -10,33 +10,54 @@ const categoryColorClasses: Record<BlogCategory, string> = {
   DESIGN: "text-[hsl(var(--category-design))]",
   BUSINESS: "text-[hsl(var(--category-business))]",
   RANDOM: "text-[hsl(var(--category-random))]",
+  TESTING: "text-[hsl(var(--category-testing))]",
 };
 
-type BlogPostRowProps = Pick<BlogPost, 'title' | 'date' | 'slug' | 'category'>;
+type BlogPostRowProps = Pick<
+  BlogPost,
+  "title" | "date" | "slug" | "category" | "intro"
+>;
 
-const BlogPostRow = memo(({ title, date, slug, category }: BlogPostRowProps) => {
-  return (
-    <Link to={`/blog/${slug}`}>
-      <motion.div
-        className="flex items-center py-5 border-b border-border/30 group cursor-pointer transition-colors duration-200"
-        whileHover={{ x: 4 }}
-        transition={{ duration: 0.2 }}
-      >
-        <div className="flex items-center gap-4 w-44 shrink-0">
-          <span className="text-sm text-muted-foreground font-light">
-            {date}
+const BlogPostRow = memo(
+  ({ title, date, slug, category, intro }: BlogPostRowProps) => {
+    return (
+      <Link to={`/blog/${slug}`}>
+        <motion.div
+          className="py-6 border-b border-border/30 group cursor-pointer transition-colors duration-200"
+          whileHover={{ x: 4 }}
+          transition={{ duration: 0.2 }}
+        >
+          {/* Date and Category */}
+          <div className="flex items-center gap-3 mb-3">
+            <span className="text-sm text-muted-foreground font-light">
+              {date}
+            </span>
+            <span
+              className={`text-xs font-semibold uppercase tracking-wider ${categoryColorClasses[category]}`}
+            >
+              {category}
+            </span>
+          </div>
+
+          {/* Title */}
+          <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:text-muted-foreground transition-colors duration-200 leading-tight">
+            {title}
+          </h3>
+
+          {/* Intro/Description */}
+          <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-3">
+            {intro}
+          </p>
+
+          {/* Read More */}
+          <span className="text-xs text-primary font-medium group-hover:underline">
+            Read →
           </span>
-          <span className={`text-xs font-medium ${categoryColorClasses[category]}`}>
-            {category}
-          </span>
-        </div>
-        <h3 className="text-foreground font-medium group-hover:text-muted-foreground transition-colors duration-200">
-          {title}
-        </h3>
-      </motion.div>
-    </Link>
-  );
-});
+        </motion.div>
+      </Link>
+    );
+  },
+);
 
 BlogPostRow.displayName = "BlogPostRow";
 

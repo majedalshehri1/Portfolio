@@ -1,0 +1,761 @@
+---
+title: "Cypress: Test Automation Framework for JavaScript"
+date: "MARCH 2026"
+category: "TESTING"
+intro: "بهذا البوست راح أشرح أحد اهم الـ Frameworks Testing Automation المبنية بـ Javascript"
+dir: "rtl"
+---
+
+## ما هو Cypress؟
+
+**Cypress** هو **Testing Framework** من الجيل الجديد، مبني خصيصاً لاختبار تطبيقات الويب الحديثة باستخدام **JavaScript**.
+فكرته إنه يسهّل على الفِرق كتابة الـ **Test Cases** وصيانتها بدون تعقيد، ويكون جزء طبيعي من سير العمل سواء في الـ **Development** أو الـ **QA**.
+
+---
+
+### من يستخدم Cypress؟
+
+- **Developers** - لكتابة اختبارات مع الكود مباشرة
+- **QA Engineers** - لتغطية الـ **Test Scenarios** بشكل منظم
+- أي فريق يبغى يرفع جودة تطبيقاته ويضمن ما فيه **Regression** في كل **Release**
+
+---
+
+### ماذا يقدم لك Cypress؟
+
+| النوع                     | الوصف                                                               |
+| ------------------------- | ------------------------------------------------------------------- |
+| **End-to-end Testing**    | اختبار التطبيق كامل من البداية للنهاية كما يستخدمه المستخدم الحقيقي |
+| **Component Testing**     | اختبار مكوّنات واجهة المستخدم بشكل منعزل                            |
+| **Accessibility Testing** | التحقق من توافق التطبيق مع معايير الـ **Accessibility**             |
+| **UI Coverage**           | قياس نسبة تغطية واجهة المستخدم بالاختبارات                          |
+
+---
+
+### لماذا Cypress؟
+
+الميزة الكبيرة في Cypress إنه يشتغل **داخل المتصفح مباشرة**، وهذا يعني:
+
+- تنفيذ الأوامر في **Real-time** بدون تأخير
+- رؤية كل خطوة في الـ **Test Runner** بشكل مرئي وواضح
+- دعم قوي للـ **Debugging** مع **Time-Travel** داخل كل **Test Step**
+- الحصول على **Insights** تساعدك تحسّن صحة الاختبارات وجودة التطبيق
+
+---
+
+## إعداد بيئة العمل
+
+قبل ما نبدأ، تأكد إنك حمّلت هذي الأدوات على جهازك:
+
+**1. Node.js** → https://nodejs.org/en/download/
+
+**2. VS Code Editor** → https://code.visualstudio.com/download
+
+---
+
+## الخطوات
+
+### الخطوة 1: تجهيز المشروع
+
+أنشئ مجلد جديد في أي مكان بجهازك وسمّه باسم مشروعك.
+
+**مثال:** `OrangeHRMTestProject`
+
+<div className="w-24">
+  <OptimizedImage src="file-project_myqkxz" fullSize />
+</div>
+
+<br />
+
+افتح **VS Code**، من القائمة العلوية اضغط **File** ← **Open Folder**، واختر المجلد اللي أنشأته.
+
+---
+
+### الخطوة 2: تهيئة المشروع
+
+قبل ما تثبّت أي **Package**، شغّل الأمر التالي في الـ **Terminal** لإنشاء ملف `package.json`:
+
+```bash
+npm init -y
+```
+
+هذا الملف يحتوي على معلومات المشروع وقائمة الـ **Dependencies**، وهو أساس أي مشروع **Node.js**.
+
+---
+
+### الخطوة 3: تثبيت Cypress
+
+افتح الـ **Terminal** من داخل VS Code (القائمة العلوية ← Terminal ← New Terminal)، واكتب:
+
+```bash
+npm install cypress@15.3.0
+```
+
+بعد ما يتم التنزيل، راح تظهر الملفات التالية في مشروعك:
+
+<div className="w-28">
+  <OptimizedImage src="cypress-cmd-open_il24hs" fullSize />
+</div>
+
+<br />
+
+ثم شغّل Cypress بالأمر:
+
+```bash
+npx cypress open
+```
+
+---
+
+### الخطوة 4: تشغيل Cypress
+
+بعد الأمر `npx cypress open`، راح يفتح نافذة فيها خيارات التشغيل:
+
+<div className="w-28">
+  <OptimizedImage src="cypress-after-open_il7dkf" fullSize />
+</div>
+
+<br />
+
+| النوع                  | الوصف                                                 |
+| ---------------------- | ----------------------------------------------------- |
+| **End-to-end Testing** | يختبر التطبيق ككل، يتأكد إن جميع الأجزاء تشتغل مع بعض |
+| **Component Testing**  | يختبر مكوّنات معيّنة بشكل مستقل                       |
+
+في هذا الـ Tutorial نركّز على **End-to-end Testing** لأنه يعطيك نظرة شاملة عن كيف يتفاعل المستخدم مع التطبيق.
+
+---
+
+### الخطوة 5: البداية مع E2E Testing
+
+بعد ما تختار **E2E Testing**، Cypress يجهّز ملفات الـ **Configuration** الأساسية تلقائيًا:
+
+<div className="w-28">
+  <OptimizedImage src="Configration-files_zwuhdq" fullSize />
+</div>
+
+<br />
+
+<div className="w-25">
+  <OptimizedImage src="vscode-config_qso8kt" fullSize />
+</div>
+
+<br />
+
+| اسم الملف                       | الغرض                                                               |
+| ------------------------------- | ------------------------------------------------------------------- |
+| `cypress.config.js`             | ملف الإعدادات الرئيسي - يحدد الـ **Base URL**، المسارات، المتصفحات  |
+| `cypress/support/e2e.js`        | يحتوي على الـ **Hooks** والأوامر التي تُنفَّذ قبل كل **Test Suite** |
+| `cypress/support/commands.js`   | يحتوي على **Custom Commands** قابلة لإعادة الاستخدام                |
+| `cypress/fixtures/example.json` | يحتوي على **Test Data** ثابتة يمكن استدعاؤها في الاختبارات          |
+
+---
+
+بعد الضغط على **Continue**، راح تظهر المتصفحات المثبّتة على جهازك.
+نستخدم **Chrome** في هذا الشرح:
+
+<div className="w-26">
+  <OptimizedImage src="browsers_lntcgk" fullSize />
+</div>
+
+<br />
+
+راح تظهر صفحة تسألك إذا تبغى **Example** جاهز أو تنشئ **Spec** جديد:
+
+<div className="w-28">
+  <OptimizedImage src="Create-ur-first-spec_tbwdyy" fullSize />
+</div>
+
+<br />
+
+| الخيار                     | الوصف                                                      |
+| -------------------------- | ---------------------------------------------------------- |
+| **Scaffold Example Specs** | ملفات اختبار جاهزة مع أمثلة توضيحية                        |
+| **Create New Spec**        | ملف اختبار فارغ تكتب فيه الـ **Test Logic** الخاصة بمشروعك |
+
+اختر **Scaffold Example Specs** عشان تشوف الأمثلة الجاهزة وتجرّبها:
+
+<div className="w-28">
+  <OptimizedImage src="example-spec_utmqlj" fullSize />
+</div>
+
+<br />
+
+جرّب ملف الـ `todo` مثلاً، اضغط عليه وراح يشتغل بشكل **Automated** ويظهر **Pass** لكل الـ **Test Cases**:
+
+<div className="w-28">
+  <OptimizedImage src="running-automation-test_p6sxkf" fullSize />
+</div>
+
+<br />
+
+---
+
+### الخطوة 6: تهيئة المشروع لكتابة اختباراتنا
+
+نقفل Cypress ونرجع لـ VS Code، ونسوي ثلاثة أشياء قبل البدء:
+
+#### 1 - حذف ملفات الـ Examples
+
+نحذف كل الملفات الموجودة داخل مجلد `e2e` عشان نبدأ بـ **Clean State**:
+
+<div className="w-26">
+  <OptimizedImage src="remove-examples_p0qzsc" fullSize />
+</div>
+
+<br />
+
+#### 2 - ضبط إعدادات `cypress.config.js`
+
+<div className="w-26">
+  <OptimizedImage src="config-project_zsmi4r" fullSize />
+</div>
+
+<br />
+
+أهم شيئين عملناهم:
+
+- **فعّلنا `video: true`** - لتسجيل **Test Execution** فيديو ومراجعته لاحقًا
+- **عطّلنا `testIsolation: false`** - لمنع الانعزال بين كل **Test** والثاني، وهذا يفيدنا في الـ **Regression Testing** عشان الـ **Tests** تشتغل بشكل متسلسل وتتشارك نفس الـ **Session**
+
+#### 3 - إضافة Cypress Types لدعم VS Code
+
+<div className="w-28">
+  <OptimizedImage src="config-project-step3_d4tvto" fullSize />
+</div>
+
+<br />
+
+أضفنا في السطر الـ 17 التالي:
+
+```js
+/// <reference types="cypress" />
+```
+
+هذا السطر يقول لـ VS Code إن الملف يستخدم **Cypress Types**، فيعطيك **IntelliSense** واقتراحات تلقائية لأوامر Cypress وأنت تكتب الكود.
+
+---
+
+### الخطوة 7: كتابة أول Test Case
+
+<div className="w-28">
+  <OptimizedImage src="first-test-case_risimy" fullSize />
+</div>
+
+<br />
+
+1. أنشئ ملف جديد داخل `cypress/e2e/` باسم `Visit.cy.js`
+2. اكتب أول **Test Case** بسيط داخله
+3. شغّل Cypress بالأمر `npx cypress open`
+
+| الأمر               | الوصف                                                                                 |
+| ------------------- | ------------------------------------------------------------------------------------- |
+| `it.only()`         | يُشغّل **Test Case** واحد فقط، مفيد أثناء الـ **Development** للتركيز على اختبار واحد |
+| `"Visit And Login"` | الـ **Test Name** - يوصف ما يفعله الاختبار ويظهر في الـ **Test Runner**               |
+| `cy.visit()`        | يفتح **URL** معيّن في المتصفح، أساس أي **E2E Test**                                   |
+
+---
+
+### ملاحظة مهمة: كيف تحدد الـ Selectors？
+
+Cypress يوفر أداة جاهزة داخل الـ **Test Runner** اسمها **Selector Playground**، تعطيك الـ **CSS Selector** أو الـ **Attribute Selector** لأي **Element** بدون ما تفتح الـ **DevTools**.
+
+<div className="w-28">
+  <OptimizedImage src="Cypress-Selector_rmyjbe" fullSize />
+</div>
+
+<br />
+
+مثال على **Selector** يظهر تلقائيًا عند التحديد:
+
+```js
+cy.get('[name="username"]');
+```
+
+يظهر فوق مباشرة داخل الـ **Test Runner** وجاهز للنسخ بـ **Copy & Paste**.
+
+هذه الأداة توفّر وقت كبير - بدل ما تبحث يدويًا في الـ **Inspect**، تنسخ الـ **Selector** في ثوانٍ.
+
+**وهذا يعتبر أهم أداة تبدأ فيها كتابة الـ Test Cases بثقة وسرعة 👌🏻**
+
+---
+
+### كتابة Test Case للـ Login
+
+```javascript
+it.only("Visit And Login", () => {
+  // Step 1: Navigate to the login page
+  cy.visit(
+    "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login",
+  );
+  cy.wait(3000);
+
+  // Step 2: Enter username and password
+  cy.get('[name="username"]').type("Admin");
+  cy.wait(3000);
+  cy.get('[name="password"]').type("admin123");
+  cy.wait(3000);
+
+  // Step 3: Submit the login form
+  cy.get('button[type="submit"]').click();
+});
+```
+
+<br />
+
+| الأمر        | الوصف                                                                  |
+| ------------ | ---------------------------------------------------------------------- |
+| `cy.visit()` | يفتح الـ **URL** المحدد في المتصفح                                     |
+| `.type()`    | يُحاكي إدخال نص في حقل **Input**                                       |
+| `.click()`   | يُحاكي الضغط على **Element** معيّن                                     |
+| `cy.wait()`  | يُضيف تأخير زمني بالـ **Milliseconds** للانتظار حتى يكتمل تحميل الصفحة |
+
+---
+
+## المهام العملية على OrangeHRM
+
+### المهمة الأولى: Functionality Testing
+
+هذه المهمة هي **Functionality Test** كامل يختبر وظيفة متكاملة تشمل ثلاث عمليات:
+
+| العملية    | الوصف                                                     |
+| ---------- | --------------------------------------------------------- |
+| **Add**    | إضافة موظف جديد والتحقق من حفظ البيانات                   |
+| **Search** | البحث عن الموظف بطريقتين: البحث العادي والـ **Assertion** |
+| **Delete** | حذف الموظف والتأكد من اختفائه                             |
+
+> 💡 نفس هذا النهج تقدر تطبّقه على أي **Module** ثاني في المشروع سواء **Jobs** أو **Departments** أو **Users**.
+> الفكرة دايمًا: **Add → Search/Assert → Delete**
+
+---
+
+بعد الـ **Login** الناجح راح يفتح صفحة الـ **Dashboard**، فيها **Sidebar** على الجانب الأيسر يحتوي على جميع الوظائف.
+
+**خطوات التنفيذ:**
+
+1. نختار **Admin** من الـ **Sidebar** ونضيف موظف جديد عبر زر **Add**
+2. نبحث عن الموظف بطريقتين:
+   - **البحث العادي** - عبر حقل البحث داخل الجدول
+   - **Assertion** - التحقق البرمجي من وجوده في الـ **DOM**
+
+<div className="w-28">
+  <OptimizedImage src="misson1_cb5fhw" fullSize />
+</div>
+
+<br />
+
+<div className="w-28">
+  <OptimizedImage src="AddEmployee_gpqbcv" fullSize />
+</div>
+
+<br />
+
+---
+
+#### ملاحظة: حقل Employee Name فيه Auto-Complete
+
+لما تكتب في حقل **Employee Name** بتلاحظ سلوك مختلف عن باقي الـ **Inputs**:
+
+- لما تكتب حرف مثل `a`، يظهر **Dropdown** فيه قائمة **Suggestions** للموظفين الموجودين
+- OrangeHRM يستخدم **Search + Filter** داخل نفس الحقل ويعطي نتائج مباشرة
+- في الـ **Automation** نكتب النص، ننتظر ظهور الـ **Dropdown**، ونختار منه
+
+```javascript
+// Type to trigger the auto-complete dropdown
+cy.get(".oxd-autocomplate-text-input > input").type("a");
+cy.wait(3000);
+```
+
+<br />
+
+<div className="w-28">
+  <OptimizedImage src="auto-compelete-misson_cpqmks" fullSize />
+</div>
+
+<br />
+
+لما تضغط على آخر سكريبت كتبته، يظهر مثل **Breakpoint** للجزء اللي وقفت عنده، وتشوف الـ **Request** قبل التنفيذ والـ **Response** بعده.
+وقف على الـ **Response** عشان تشوف الـ **Dropdown** وتختار العناصر اللي تبغاها، وانسخ الـ **Selector** وحطّه في الكود.
+
+<div className="w-28">
+  <OptimizedImage src="cmd-autocomplate_fauadt" fullSize />
+</div>
+
+<br />
+
+في **البحث العادي** نفس الفكرة، تحدد حقل البحث وتتعامل مع الـ **Dropdown** بنفس الطريقة:
+
+<div className="w-28">
+  <OptimizedImage src="search-mission_udaof4" fullSize />
+</div>
+
+<br />
+
+---
+
+#### البحث بطريقة الـ Assertion مع الحذف
+
+الـ **Assertion** هو التحقق البرمجي من وجود **Element** في الصفحة أو التأكد من قيمته.
+نستخدمه للتحقق من وجود الموظف في الجدول قبل حذفه:
+
+```javascript
+// Step 1: Assert the employee exists in the table
+cy.get(".oxd-table-body")
+  .should("contain", "Almushdaq3")
+  .then(() => cy.log("Employee verified successfully"));
+
+cy.wait(4000);
+
+// Step 2: Find the row and scroll into view
+cy.contains(".oxd-table-row", "Almushdaq3")
+  .scrollIntoView({ duration: 300 })
+  .should("exist")
+  .within(() => {
+    // Step 3: Select the row checkbox
+    cy.get(":nth-child(1) > .oxd-table-card-cell-checkbox .oxd-icon").click({
+      force: true,
+    });
+    // Step 4: Click the delete icon
+    cy.get(":nth-child(1) > .oxd-icon")
+      .should("be.visible")
+      .click({ force: true, multiple: true });
+  });
+
+cy.wait(1000);
+
+// Step 5: Confirm deletion from the modal
+cy.get(".orangehrm-modal-footer > .oxd-button--label-danger").click();
+```
+
+<br />
+
+> استبدل `"Almushdaq3"` باسم الموظف اللي أنشأته في خطوة الإضافة.
+
+---
+
+## الـ Hooks في Cypress
+
+### ما هي الـ Hooks؟
+
+في الـ **Test Automation**، من أهم الأشياء إنك ما تكرر نفس الأكواد في كل **Test Case**.
+الـ **Hooks** هي أكواد تُشغّلها Cypress **قبل** أو **بعد** الـ **Tests** بشكل تلقائي.
+
+> **Hooks = أكواد تشتغل في وقت محدد بدون ما تستدعيها داخل كل Test.**
+
+---
+
+### أنواع الـ Hooks
+
+| الـ Hook       | متى يشتغل؟                              | الاستخدام الأمثل                                   |
+| -------------- | --------------------------------------- | -------------------------------------------------- |
+| `before()`     | مرة واحدة قبل جميع الـ **Tests**        | الـ **Login** مرة واحدة، تجهيز **Test Data** ثابتة |
+| `after()`      | مرة واحدة بعد انتهاء جميع الـ **Tests** | الـ **Logout**، تنظيف الـ **State**                |
+| `beforeEach()` | قبل كل **Test Case**                    | فتح صفحة معيّنة، إعادة تهيئة الـ **State**         |
+| `afterEach()`  | بعد كل **Test Case**                    | أخذ **Screenshot** عند الفشل، **Reset** للصفحة     |
+
+---
+
+### مثال واقعي
+
+تخيّل عندك **5 Test Cases**:
+
+1. تسجيل مستخدم
+2. إضافة موظف
+3. تعديل موظف
+4. البحث عن موظف
+5. حذف موظف
+
+**بدون Hooks:** تكتب كود الـ **Login** خمس مرات - كود متكرر وصعب الصيانة.
+
+**مع Hooks:** تحط الـ **Login** داخل `before()` مرة واحدة، وكل **Test** يبدأ مباشرة.
+
+---
+
+### مثال عملي بالكود
+
+```javascript
+describe("OrangeHRM - Employee Management Tests", () => {
+  // Runs once before all tests - Login
+  before(() => {
+    cy.visit(
+      "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login",
+    );
+    cy.get('[name="username"]').type("Admin");
+    cy.get('[name="password"]').type("admin123");
+    cy.get('button[type="submit"]').click();
+    cy.wait(3000);
+  });
+
+  // Runs before each test - Navigate to the target page
+  beforeEach(() => {
+    cy.visit(
+      "https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewEmployeeList",
+    );
+    cy.wait(2000);
+  });
+
+  it("Add new employee", () => {
+    // Test logic here...
+  });
+
+  it("Search for employee", () => {
+    // Test logic here...
+  });
+
+  it("Delete employee", () => {
+    // Test logic here...
+  });
+
+  // Runs once after all tests
+  after(() => {
+    cy.log("All tests completed - session ended");
+  });
+});
+```
+
+<br />
+
+| الجزء          | الوصف                                                                     |
+| -------------- | ------------------------------------------------------------------------- |
+| `before()`     | ينفّذ الـ **Login** مرة واحدة، جميع الـ **Tests** ترث نفس الـ **Session** |
+| `beforeEach()` | يرجع للصفحة المطلوبة قبل كل **Test**                                      |
+| `after()`      | ينفّذ بعد انتهاء كل شيء، مناسب للتنظيف أو الـ **Logging**                 |
+| `describe()`   | يجمع الـ **Tests** تحت اسم واحد كـ **Test Suite** في الـ **Test Runner**  |
+
+---
+
+### متى تستخدم كل Hook؟
+
+| السيناريو                            | الأنسب         |
+| ------------------------------------ | -------------- |
+| الـ **Login** مرة واحدة              | `before()`     |
+| فتح صفحة معيّنة قبل كل اختبار        | `beforeEach()` |
+| تنظيف بعد انتهاء كل شيء              | `after()`      |
+| أخذ **Screenshot** عند فشل أي اختبار | `afterEach()`  |
+
+> **الخلاصة:** الـ **Hooks** هي الطريقة الصحيحة لكتابة اختبارات نظيفة ومنظّمة، تقدر تصونها وتطوّرها بسهولة.
+
+---
+
+## الـ Regression Testing
+
+### ما هو Regression Testing؟
+
+> نعيد اختبار النظام بعد إضافة ميزة جديدة أو تعديل، عشان نتأكد إن الأشياء القديمة ما اتكسّرت.
+
+لو فريق التطوير أضاف **Feature** جديد أو عدّل في جزء معيّن في الـ **frontend / backend**، نحن كـ **QA** ما نختبر الجديد فقط - نرجع نعيد اختبار كل شيء كان يشتغل قبله عشان نتأكد إنه **ما تكسّر** بسبب التغيير.
+
+---
+
+### كيف طبّقنا الـ Regression Testing؟
+
+#### 1 - تنظيم ملفات الـ Test Cases
+
+رتّبنا المشروع بحيث صار كل **Test Case** في ملف مستقل واضح وظيفته:
+
+<div className="w-28">
+  <OptimizedImage src="regression-testing1_qwe65r" fullSize />
+</div>
+
+<br />
+
+الفكرة إني ما أكرر الأكواد - كل **Test Case** له ملف مستقل، وملف الـ **Regression** هو المسؤول عن تشغيلهم جميعًا بالـ **Order** الصحيح.
+
+---
+
+#### 2 - إنشاء ملف `Regression.cy.js`
+
+هذا الملف يجمع كل الملفات السابقة ويعمل لها **Import بالترتيب**:
+
+```javascript
+/*
+ * Regression Test Suite - Import Order:
+ * 1. Visit Test
+ * 2. Login Test
+ * 3. Add Employee Test
+ * 4. Search and Delete Employee Test
+ * 5. Add Job Test
+ * 6. Search and Delete Job Test
+ * 7. My Info Test
+ * 8. Logout Test
+ *
+ * Each test file should contain only one 'it' block.
+ * The order of imports defines the order of execution.
+ */
+
+import "./loginAndVisitAndLogout/Visit.cy.js";
+import "./loginAndVisitAndLogout/Login.cy.js";
+import "./employee/AddEmp.cy.js";
+import "./employee/SearchAndDeleteEmp.cy.js";
+import "./job/AddJob.cy.js";
+import "./job/SearchAndDeleteJob.cy.js";
+import "./myInfo/MyInfo.cy.js";
+import "./loginAndVisitAndLogout/Logout.cy.js";
+```
+
+---
+
+### فكرة `testIsolation: false`
+
+في `cypress.config.js` فعّلنا:
+
+```js
+testIsolation: false,
+```
+
+هذا الإعداد مهم لأنه يسمح بالانتقال من صفحة لصفحة في نفس الـ **Test Run** بدون ما يُعيد الصفحة من الصفر في كل **Test Case**.
+يعني **باستمرارية الـ Session** - وهذا مناسب للـ **Regression** عشان نشغّل مجموعة **Tests** متتابعة بدون ما نرجع من البداية كل مرة.
+
+---
+
+### كيف تشغّل كل الاختبارات مرة واحدة؟
+
+```bash
+npx cypress open
+```
+
+بعد ما يفتح الـ **Cypress UI**، ادخل على ملف `Regression.cy.js` واضغط عليه.
+راح يشغّل جميع الاختبارات بنفس ترتيب الـ **Import**.
+
+**وبكذا نفّذت Regression Test كامل على المشروع بضغطة واحدة ✅**
+
+---
+
+### النتيجة النهائية
+
+<div className="w-28">
+  <OptimizedImage src="success-test-regression_odrjd1" fullSize />
+</div>
+
+<br />
+
+| الترتيب | الاختبار              | النتيجة |
+| ------- | --------------------- | ------- |
+| 1       | Visit Test            | ✅ Pass |
+| 2       | Login Test            | ✅ Pass |
+| 3       | Add Employee Tests    | ✅ Pass |
+| 4       | Delete Employee Tests | ✅ Pass |
+| 5       | Add Job Tests         | ✅ Pass |
+| 6       | Delete Job Tests      | ✅ Pass |
+| 7       | My Info Test          | ✅ Pass |
+| 8       | Logout Test           | ✅ Pass |
+
+---
+
+### خلاصة الـ Regression Testing
+
+| المفهوم                  | الشرح                                                       |
+| ------------------------ | ----------------------------------------------------------- |
+| **Regression Testing**   | إعادة اختبار كل شيء بعد أي تعديل للتأكد إن القديم ما اتكسّر |
+| **Regression.cy.js**     | ملف مركزي يجمع ويرتّب جميع الـ **Test Cases**               |
+| **testIsolation: false** | يسمح بالتنقل بين الـ **Tests** بدون فقدان الـ **Session**   |
+| **Import Order**         | ترتيب الـ **Import** هو نفس ترتيب التنفيذ                   |
+
+---
+
+## تصوير الشاشة والفيديو
+
+Cypress يسمح لك تُصوّر الشاشة وتسجّل الفيديو أثناء تنفيذ الاختبارات، ويأخذ **Screenshots** تلقائيًا عند أي **Error**.
+
+### لماذا هذا مهم؟
+
+- **توثيق نتيجة كل Test Case** - دليل مرئي على كل خطوة
+- **معرفة وش صار وقت الخطأ** - بدل ما تخمّن وين فشل الاختبار
+- **مشاركة أدلة التنفيذ** مع الفريق بسهولة
+
+---
+
+### تفعيل تسجيل الفيديو
+
+تصوير الفيديو تم تفعيله مع بداية تهيئة المشروع بإضافة:
+
+```js
+video: true,
+```
+
+لتشغيل الاختبارات مع التسجيل الكامل، استخدم الكوماند التالي:
+
+```bash
+npx cypress run --browser chrome --headed --spec "cypress/e2e/Regression.cy.js"
+```
+
+| الجزء              | الوصف                                    |
+| ------------------ | ---------------------------------------- |
+| `--browser chrome` | يشغّل الاختبار على متصفح **Chrome**      |
+| `--headed`         | يفتح المتصفح بشكل مرئي (مو **Headless**) |
+| `--spec`           | يحدد الملف المطلوب تشغيله                |
+
+هذا الأمر يشغّل جميع الاختبارات داخل ملف **Regression**، يسجّل الفيديو، ويأخذ **Screenshots** تلقائيًا لو صار **Error**.
+
+---
+
+### كيف تأخذ Screenshot يدويًا؟
+
+```js
+cy.screenshot();
+```
+
+يلتقط صورة للشاشة في اللحظة التي أنت فيها.
+
+**مثال عملي:**
+
+```javascript
+it("Add Employee", () => {
+  // ... test steps
+
+  // Take a screenshot after completing all steps
+  cy.screenshot();
+});
+```
+
+---
+
+### وين تُحفَظ الصور والفيديو؟
+
+Cypress يحفظها تلقائيًا في:
+
+```
+/cypress/screenshots
+/cypress/videos
+```
+
+هذي الفولدرات تتأنشئ تلقائيًا بعد أول تشغيل.
+
+<div className="w-28">
+  <OptimizedImage src="screenshot-tests_qccuyf" fullSize />
+</div>
+
+<br />
+
+---
+
+### ملاحظة: إذا بغيت تحتفظ بالفيديوهات السابقة
+
+بشكل افتراضي Cypress يحذف الفيديوهات القديمة قبل كل تشغيل جديد.
+لمنع هذا، أضف السطر التالي في `cypress.config.js`:
+
+```js
+module.exports = defineConfig({
+  // Step 1: Enable video recording
+  video: true,
+  trashAssetsBeforeRuns: false, // Prevents deleting previous videos before new runs
+
+  e2e: {
+    setupNodeEvents(on, config) {
+      // implement node event listeners here
+    },
+    // Step 2: Disable test isolation
+    testIsolation: false,
+  },
+});
+```
+
+`trashAssetsBeforeRuns: false` يسمح بتراكم الفيديوهات بدون حذف المقاطع السابقة.
+
+---
+
+### رابط المشروع الكامل
+
+المشروع مرفوع على **GitHub** لمن يبغى يراجع الأكواد:
+
+[https://github.com/majedalshehri1/Cypress-Automation-Tuwaiq](https://github.com/majedalshehri1/Cypress-Automation-Tuwaiq)
